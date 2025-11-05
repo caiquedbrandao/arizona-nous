@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="3600"> <!-- fallback: recarrega total a cada 60 min -->
+  <meta http-equiv="refresh" content="3600"> <!-- fallback: recarrega a página inteira a cada 1h -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel Power BI - Acabamento</title>
+  <title>Acabamento 1 - Produção</title>
   <style>
     html, body {
       margin: 0;
@@ -22,17 +22,20 @@
 </head>
 <body>
   <iframe 
-  src="https://app.powerbi.com/reportEmbed?reportId=24f1eb20-dcbd-4847-bb99-3699d76c2a3d&autoAuth=true&ctid=020fe90c-bfec-43f0-9548-6fca795282a7&pageName=ff9496aa727b4e253a03&refresh=1" 
-  allowFullScreen="true">
-</iframe>
-
+    src="https://app.powerbi.com/view?r=eyJrIjoiMDhiZjFiZGItNTFmNS00MGFhLTkxMzMtNGEyYzU5ZGUzOTRlIiwidCI6IjAyMGZlOTBjLWJmZWMtNDNmMC05NTQ4LTZmY2E3OTUyODJhNyJ9" 
+    allowFullScreen="true">
+  </iframe>
 
   <script>
-    // 🔁 Recarrega o painel a cada 5 minutos (300.000 ms)
+    const iframe = document.querySelector("iframe");
+    const REFRESH_INTERVAL_MS = 10 * 30 * 1000; // 5 minutos
+
     setInterval(() => {
-      const iframe = document.querySelector('iframe');
-      iframe.src = iframe.src;
-    }, 300000);
+      const src = iframe.src.split("?")[0];
+      const params = new URLSearchParams(iframe.src.split("?")[1] || "");
+      params.set("t", Date.now());
+      iframe.src = `${src}?${params.toString()}`;
+    }, REFRESH_INTERVAL_MS);
   </script>
 </body>
 </html>
